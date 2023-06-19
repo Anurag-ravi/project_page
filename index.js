@@ -138,7 +138,11 @@ const StartServer = () => {
                         user: req.user._id
                     });
                     await newProject.save();
-                    res.status(200).json({ project: newProject });
+                    res.status(200).json({
+                        "status": "success",
+                        "message": "Project created successfully",
+                        "project_id": project_id
+                    });
                 }
             }
         }
