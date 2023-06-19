@@ -77,10 +77,10 @@
 
   <body class="bg-gray-100">
     <header class="bg-blue-500 py-4">
-      <div class="container mx-auto px-4 flex justify-between items-center">
+      <div class="container mx-auto px-4 flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-white text-2xl font-bold"><%= project.name %></h1>
         <nav>
-          <ul class="flex justify-around space-x-20">
+          <ul class="flex justify-around space-x-5 sm:space-x-10 md:space-x-15 lg:space-x-20">
             <li>
               <a href="#about" class="text-white hover:text-gray-200">About</a>
             </li>
@@ -111,7 +111,7 @@
       <% if (project.links.length > 0) { %>
       <section id="links" class="mb-8">
         <h2 class="text-2xl font-bold mb-4">Links</h2>
-        <ul style="list-style: none">
+        <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
           <% project.links.map((link) => { %>
           <a href="<%= link.url %>" target="_blank"
             class="bg-white w-40 h-12 rounded-xl border border-blue-100 flex justify-start items-center px-2 hover:border-blue-300"
@@ -124,7 +124,7 @@
           </a>
           <% }); %>
           
-        </ul>
+        </div>
       </section>
       <% } %>
 
@@ -148,9 +148,9 @@
           
           <% }) %>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 w-screen">
           <% project.videos.map((video) => { %>
-            <div class="p-4 w-auto h-auto">
+            <div class="p-4">
               <iframe src="<%= video.src %>" frameborder="0" allowfullscreen></iframe>
             </div>
             <% }) %>
