@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= project.project_id %> </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.7/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.css"
+    />
+    <style>
+      main ul {
+        list-style-type: disc;
+      }
+      #preview {
+        background-color: #f5f5f5;
+        padding: 20px;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 50px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.9);
+      }
+      
+      .modal img {
+        display: block;
+        margin: auto;
+        max-width: 90%;
+        max-height: 80%;
+      }
+      
+      .close {
+        color: #fff;
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+      
+      .close:hover {
+        color: #bbb;
+      }
+      
+      .modal.active {
+        display: block;
+      }
+      .square-image-wrapper {
+        position: relative;
+        width: 100%;
+        padding-bottom: 100%;
+      }
+      
+      .square-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      
+    </style>
+  </head>
+
+  <body class="bg-gray-100">
+    <header class="bg-blue-500 py-4">
+      <div class="container mx-auto px-4 flex justify-between items-center">
+        <h1 class="text-white text-2xl font-bold"><%= project.name %></h1>
+        <nav>
+          <ul class="flex justify-around space-x-20">
+            <li>
+              <a href="#about" class="text-white hover:text-gray-200">About</a>
+            </li>
+            <% if (project.links.length > 0) { %>
+            <li>
+              <a href="#links" class="text-white hover:text-gray-200">Links</a>
+            </li>
+            <% } %>
+            <% if (project.images.length > 0) { %>
+            <li>
+              <a href="#gallery" class="text-white hover:text-gray-200"
+                >Gallery</a
+              >
+            </li>
+            <% } %>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container px-4 mx-auto py-8">
+      <section id="about" class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">About</h2>
+        <div id="preview" class="markdown-body">
+          <img src="loading.gif" alt="">
+        </div>
+      </section>
+      <% if (project.links.length > 0) { %>
+      <section id="links" class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Links</h2>
+        <ul style="list-style: none">
+          <% project.links.map((link) => { %>
+          <a href="<%= link.url %>" target="_blank"
+            class="bg-white w-40 h-12 rounded-xl border border-blue-100 flex justify-start items-center px-2 hover:border-blue-300"
+          >
+            <img
+              src="<%= link.link_type %>"
+              class="w-10 h-10 mr-1"
+            />
+            <div class="text-center font-sans font-medium text-lg"><%= link.name %> </div>
+          </a>
+          <% }); %>
+          
+        </ul>
+      </section>
+      <% } %>
+
+      <% if (project.images.length > 0 || project.videos.length > 0 ) { %>
+      <section id="gallery" class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Gallery</h2>
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
+        <% project.images.map((image) => { %>
+          <div class="bg-gray-200 p-4 hover:bg-gray-300 hover:border hover:border-blue-300 rounded-lg">
+            <div class="square-image-wrapper">
+              <img src="<%= image.src %>" alt="Screenshot 1" class="square-image rounded-lg" onclick="openModal(this)" />
+            </div>
+          </div>
+          
+          <div id="previewModal" class="modal">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="previewImage" src="" alt="Preview Image">
+          </div>
+          
+          <% }) %>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <% project.videos.map((video) => { %>
+            <div class="p-4 w-auto h-auto">
+              <iframe src="<%= video.src %>" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <% }) %>
+        </div>
+      </section>
+      <% } %>
+    </main>
+
+    <footer class="bg-gray-200 py-4 text-center">
+      <p>&copy; 2023 <%= project.name %> by <%= project.user.name %>. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const previewElement = document.getElementById("preview");
+        // Render Markdown content with GitHub-like styling
+        const converter = new showdown.Converter();
+        let markdown = "<%= JSON.stringify(project.markdown) %>";
+        // remove the quotes
+        markdown = markdown.substring(5, markdown.length - 6);
+        const html = converter.makeHtml(markdown);
+        previewElement.innerHTML = html;
+      });
+      function openModal(image) {
+        const modal = document.getElementById("previewModal");
+        const previewImage = document.getElementById("previewImage");
+      
+        previewImage.src = image.src;
+        modal.classList.add("active");
+      }
+      
+      function closeModal() {
+        const modal = document.getElementById("previewModal");
+        modal.classList.remove("active");
+      }
+      
+    </script>
+  </body>
+</html>

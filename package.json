@@ -1,0 +1,25 @@
+{
+  "name": "project_page",
+  "version": "1.0.0",
+  "description": "- Team Name: **The Boys**\r - Team Members: \r     - Anurag Ravi      (200101017)\r     - Ayan Gautam      (200101022)\r     - Bhanu Rajput     (200101024)\r     - Gaurav Kumar     (200101033)\r     - Himanshu Shekhar (200101042)",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "author": "Anurag Ravi",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "mongoose": "^7.3.0",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
