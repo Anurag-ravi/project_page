@@ -1,0 +1,151 @@
+{
+	"info": {
+		"_postman_id": "2008f52e-dc4c-43f8-a0fa-4e15417e1bd5",
+		"name": "project_page",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18631682"
+	},
+	"item": [
+		{
+			"name": "create project",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\":\"Testing\",\n  \"project_id\":\"testing\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/create-project",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"create-project"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update project",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"Submission Portal\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/update-project/submission_portal",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"update-project",
+						"submission_portal"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add md",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/add-md/testing",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"add-md",
+						"testing"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get project",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/submission_portal/get",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"submission_portal",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "in",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "your_api_key",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://project-page.onrender.com",
+			"type": "string"
+		}
+	]
+}

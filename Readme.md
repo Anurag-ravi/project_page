@@ -23,6 +23,7 @@ This tool is built using [Node.js](https://nodejs.org/en/) and [Express.js](http
 
 1. Currently there is No GUI for this tool. So, you have to use [Postman](https://www.postman.com/) or [Insomnia](https://insomnia.rest/) or any other API testing tool.
 2. Will be including GUI in future.
+3. You can download the [Postman Collection](https://raw.githubusercontent.com/Anurag-ravi/project_page/master/project_page.postman_collection.json?token=GHSAT0AAAAAACECXQ7XJSDDGEZHXZ6VPK7MZEQRHBA) and import it in your Postman.
 
 ## API Endpoints
 - make sure to add `Authorization` header with value as `API Key` received in the email in all the requests.
