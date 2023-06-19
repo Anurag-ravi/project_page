@@ -29,67 +29,62 @@ This tool is built using [Node.js](https://nodejs.org/en/) and [Express.js](http
 ### 1 Create Project API
 
 - **URL**
-  ```http
-  POST /create-project
-  ```
+    ```
+    POST /create-project
+    ```
 - Request body structure
-
-  | Parameter    | Type     | Required         | Description                                                         |
-  | :----------- | :------- | :--------------- | :------------------------------------------------------------------ |
-  | `project_id` | `string` | **Required**     | must be unique and only contain `alphabets`, `numbers`, `-` and `_` |
-  | `name`       | `string` | **Required**     | Name of the project                                                 |
-  | `links`      | `array`  | **Not Required** | Array of links to be displayed on the project page                  |
-  | `images`     | `array`  | **Not Required** | Array of images to be displayed on the project page                 |
-  | `videos`     | `array`  | **Not Required** | Array of videos to be displayed on the project page                 |
+    - `links`, `images` and `videos` are arrays and are optional.
+    - `project_id` must be unique and only contain `alphabets`, `numbers`, `-` and `_`
+    - `name` is required and can be any string.
 
 - Request body example
-  ```json
-  {
-    "project_id": "my_project",
-    "name": "My Project",
-    "links": [
-      {
-        "name": "Backend",
-        "url": "https://example.com",
-        "link_type": "github"
-      },
-      {
-        "name": "Website",
-        "url": "https://example.com",
-        "link_type": "website"
-      },
-      {
-        "name": "App",
-        "url": "https://example.com",
-        "link_type": "apk"
-      }
-    ],
-    "images": [
-      {
-        "src": "https://image.com",
-        "alt": "image"
-      },
-      {
-        "src": "https://image.com",
-        "alt": "image"
-      }
-    ],
-    "videos": [
-      {
-        "src": "https://www.youtube.com/embed/video_id",
-        "alt": "video"
-      }
-    ]
-  }
-  ```
+    ```json
+    {
+        "project_id": "my_project",
+        "name": "My Project",
+        "links": [
+            {
+            "name": "Backend",
+            "url": "https://example.com",
+            "link_type": "github"
+            },
+            {
+            "name": "Website",
+            "url": "https://example.com",
+            "link_type": "website"
+            },
+            {
+            "name": "App",
+            "url": "https://example.com",
+            "link_type": "apk"
+            }
+        ],
+        "images": [
+            {
+            "src": "https://image.com",
+            "alt": "image"
+            },
+            {
+            "src": "https://image.com",
+            "alt": "image"
+            }
+        ],
+        "videos": [
+            {
+            "src": "https://www.youtube.com/embed/video_id",
+            "alt": "video"
+            }
+        ]
+    }
+    ```
 
 - Note:-
-   - `link_type` can be one of the following:-
-       - `github`
-       - `website`
-       - `apk`
-   - `src` in `images` and `videos` can be any valid url.
-   - `alt` in `images` and `videos` can be any string also it is not required.
+    - `link_type` can be one of the following:-
+        - `github`
+        - `website`
+        - `apk`
+    - `src` in `images` and `videos` can be any valid url.
+    - `alt` in `images` and `videos` can be any string also it is not required.
 
 - Response body example
     ```json
@@ -106,65 +101,53 @@ This tool is built using [Node.js](https://nodejs.org/en/) and [Express.js](http
 - The tool support markdown for about section.
 - You can upload any valid markdown file to the tool and it will be rendered on the project page.
 - **URL**
-  ```http
-  POST /add-md/project_id
-  ```
+    ```
+    POST /add-md/project_id
+    ```
 - Request body structure
-    | Parameter    | Type     | Required         | Description                                                         |
-    | :----------- | :------- | :--------------- | :------------------------------------------------------------------ |
-    | `readme` | `file` | **Required**     | a valid readme file |
-
+    - `readme` is required and must be a valid markdown file.
+    
 - Response body example
     ```json
     {
-        "project": {
-            "project_id": "my_project",
-            "name": "My Project",
-            "markdown":"your uploaded markdown file text"
-            ....
-            ....
-        }
+        "status": "success",
+        "message": "Project created successfully",
+        "project_id": "my_project"
     }
     ```
 
 ### 3 Update Project API
 - **URL**
-  ```http
-  PUT /update-project/project_id
-  ```
+    ```
+    PUT /update-project/project_id
+    ```
 - Request body structure
-    | Parameter    | Type     | Required         | Description                                                         |
-    | :----------- | :------- | :--------------- | :------------------------------------------------------------------ |
-    | `name`       | `string` | **Not Required** | Name of the project                                                 |
-    | `links`      | `array`  | **Not Required** | Array of links to be displayed on the project page                  |
-    | `images`     | `array`  | **Not Required** | Array of images to be displayed on the project page                 |
-    | `videos`     | `array`  | **Not Required** | Array of videos to be displayed on the project page                 |
-
-- What ever you send in the request body will be updated in the project page.
+    - `name`, `links`, `images` and `videos` are optional.
+    - What ever you send in the request body will be updated in the project page.
 
 - Request body example
-  ```json
-  {
-    "name": "My Project updated",
-    "links": [
-      {
-        "name": "Backend",
-        "url": "https://example.com",
-        "link_type": "github"
-      },
-      {
-        "name": "Website",
-        "url": "https://example.com",
-        "link_type": "website"
-      },
-      {
-        "name": "App",
-        "url": "https://example.com",
-        "link_type": "apk"
-      }
-    ],
-  }
-  ```
+    ```json
+    {
+        "name": "My Project updated",
+        "links": [
+            {
+                "name": "Backend",
+                "url": "https://example.com",
+                "link_type": "github"
+            },
+            {
+                "name": "Website",
+                "url": "https://example.com",
+                "link_type": "website"
+            },
+            {
+                "name": "App",
+                "url": "https://example.com",
+                "link_type": "apk"
+            }
+        ],
+    }
+    ```
 - Above request will update the `name` and `links` of the project and rest fields will remain same.
 
 - Response body example
@@ -188,15 +171,15 @@ This tool is built using [Node.js](https://nodejs.org/en/) and [Express.js](http
                 "link_type": "apk"
             }
         ],
-        ... rest fields
+        "rest fields": "..."
     }
     ```
 
 ### 4 Get Project API
 - **URL**
-  ```http
-  GET /project_id/get
-  ```
+    ```
+    GET /project_id/get
+    ```
 - No Request Body required
 - Response body example
     ```json

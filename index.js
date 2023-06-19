@@ -23,6 +23,37 @@ function isValidString(str) {
     const regex = /^[a-zA-Z0-9_-]+$/;
     return regex.test(str);
 }
+async function renderPage(project,res) {
+    const lls = [
+        "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+        "https://img.icons8.com/?size=512&id=a04gr8MLo013&format=png",
+        "https://img.icons8.com/?size=512&id=3OLJ5A25EACa&format=png"
+    ]
+    let links = [];
+    project.links.forEach(link => {
+        if(link.link_type === 'github') {
+            links.push({
+                url: link.url,
+                name: link.name,
+                link_type: lls[0]
+            });
+        } else if(link.link_type === 'website') {
+            links.push({
+                url: link.url,
+                name: link.name,
+                link_type: lls[1]
+            });
+        } else if(link.link_type === 'apk') {
+            links.push({
+                url: link.url,
+                name: link.name,
+                link_type: lls[2]
+            });
+        }
+    });
+    project.links = links;
+    res.render('index', { project, project });
+}
 /** Only Start Server if Mongoose Connects */
 const StartServer = () => {
     router.use(express.urlencoded({ extended: true }));
@@ -30,47 +61,45 @@ const StartServer = () => {
     router.use(cors());
     router.set('view engine', 'ejs');
     router.use(express.static('assets'));
-
-    router.get('/:project_id', async (req, res) => {
-        const { project_id } = req.params;
-        const project = await Project.findOne({ project_id }).populate(
+    router.get('/', async (req, res) => {
+        const project = await Project.findOne({ project_id:'project_page' })
+        .select('-markdown')
+        .populate(
             {
                 path: 'user',
                 select: 'name'
             }
         );
         if (project) {
-            const lls = [
-                "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
-                "https://img.icons8.com/?size=512&id=a04gr8MLo013&format=png",
-                "https://img.icons8.com/?size=512&id=3OLJ5A25EACa&format=png"
-            ]
-            let links = [];
-            project.links.forEach(link => {
-                if(link.link_type === 'github') {
-                    links.push({
-                        url: link.url,
-                        name: link.name,
-                        link_type: lls[0]
-                    });
-                } else if(link.link_type === 'website') {
-                    links.push({
-                        url: link.url,
-                        name: link.name,
-                        link_type: lls[1]
-                    });
-                } else if(link.link_type === 'apk') {
-                    links.push({
-                        url: link.url,
-                        name: link.name,
-                        link_type: lls[2]
-                    });
-                }
-            });
-            project.links = links;
-            res.render('index', { project, project });
+            renderPage(project,res);
+        } else {
+            res.render('404',{ project_id : "Home" });
+        }
+    });
+    router.get('/:project_id', async (req, res) => {
+        const { project_id } = req.params;
+        const project = await Project.findOne({ project_id })
+        .select('-markdown')
+        .populate(
+            {
+                path: 'user',
+                select: 'name'
+            }
+        );
+        if (project) {
+            renderPage(project,res);
         } else {
             res.render('404',{ project_id, project_id });
+        }
+    });
+
+    router.get('/:project_id/markdown', async (req, res) => {
+        const { project_id } = req.params;
+        const project = await Project.findOne({ project_id }).select('markdown');
+        if (project) {
+            res.send(project.markdown);
+        } else {
+            res.status(404).json({ error: 'Project Not Found' });
         }
     });
 

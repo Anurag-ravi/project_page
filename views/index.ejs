@@ -10,7 +10,7 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css"
     />
     <style>
       main ul {
@@ -160,7 +160,7 @@
     </main>
 
     <footer class="bg-gray-200 py-4 text-center">
-      <p>&copy;2023 <%= project.name %> made with &#128151; by <%= project.user.name %>. All rights reserved.</p>
+      <p>&copy;2023 <strong><%= project.name %></strong> made with &#128151; by <strong><%= project.user.name %></strong>. All rights reserved.</p>
     </footer>
     <script src="https://cdn.jsdelivr.net/npm/showdown@1.9.1/dist/showdown.min.js"></script>
     <script>
@@ -168,11 +168,19 @@
         const previewElement = document.getElementById("preview");
         // Render Markdown content with GitHub-like styling
         const converter = new showdown.Converter();
-        let markdown = "<%= JSON.stringify(project.markdown) %>";
-        // remove the quotes
-        markdown = markdown.substring(5, markdown.length - 6);
-        const html = converter.makeHtml(markdown);
-        previewElement.innerHTML = html;
+        //let markdown = "<%= JSON.stringify(project.markdown) %>";
+        // // remove the quotes
+        //markdown = markdown.substring(5, markdown.length - 6);
+        //const html = converter.makeHtml(markdown);
+        //previewElement.innerHTML = html;
+        fetch("<%= project.project_id %>/markdown")
+          .then((response) => response.text())
+          .then((data) => {
+            const html = converter.makeHtml(data);
+            previewElement.innerHTML = html;
+          }).catch((error) => {
+            console.error(error);
+          });
       });
       function openModal(image) {
         const modal = document.getElementById("previewModal");
