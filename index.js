@@ -69,6 +69,7 @@ const StartServer = () => {
     router.set('view engine', 'ejs');
     router.use(express.static('assets'));
     router.get('/', async (req, res) => {
+        console.log(new Date().toLocaleString('en-US', {timeZone: 'Asia/Kolkata'}));
         const project = await Project.findOne({ project_id:'project_page' })
         .select('-markdown')
         .populate(
