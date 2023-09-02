@@ -27,7 +27,8 @@ async function renderPage(project,res) {
     const lls = [
         "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
         "https://img.icons8.com/?size=512&id=a04gr8MLo013&format=png",
-        "https://img.icons8.com/?size=512&id=3OLJ5A25EACa&format=png"
+        "https://img.icons8.com/?size=512&id=3OLJ5A25EACa&format=png",
+        "https://img.icons8.com/?size=512&id=22813&format=png"
     ]
     let links = [];
     project.links.forEach(link => {
@@ -48,6 +49,12 @@ async function renderPage(project,res) {
                 url: link.url,
                 name: link.name,
                 link_type: lls[2]
+            });
+        } else if(link.link_type === 'docker') {
+            links.push({
+                url: link.url,
+                name: link.name,
+                link_type: lls[3]
             });
         }
     });

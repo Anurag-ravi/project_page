@@ -37,7 +37,7 @@
         display: block;
         margin: auto;
         max-width: 90%;
-        max-height: 80%;
+        max-height: 100%;
       }
       
       .close {
@@ -49,8 +49,28 @@
         font-weight: bold;
         cursor: pointer;
       }
-      
-      .close:hover {
+
+      .prev {
+        color: #fff;
+        position: absolute;
+        top: 50%;
+        left: 35px;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .next {
+        color: #fff;
+        position: absolute;
+        top: 50%;
+        right: 35px;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .prev:hover , .next:hover, .close:hover {
         color: #bbb;
       }
       
@@ -67,6 +87,12 @@
         position: absolute;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .previewImage{
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -111,10 +137,10 @@
       <% if (project.links.length > 0) { %>
       <section id="links" class="mb-8">
         <h2 class="text-2xl font-bold mb-4">Links</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-1">
+        <div class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-1">
           <% project.links.map((link) => { %>
           <a href="<%= link.url %>" target="_blank"
-            class="bg-white w-40 h-12 rounded-xl border border-blue-100 flex justify-start items-center px-2 hover:border-blue-300"
+            class="bg-white w-48 h-12 rounded-xl border border-blue-100 flex justify-start items-center px-2 hover:border-blue-300"
           >
             <img
               src="<%= link.link_type %>"
@@ -137,12 +163,14 @@
         <% project.images.map((image) => { %>
           <div class="bg-gray-200 p-4 hover:bg-gray-300 hover:border hover:border-blue-300 rounded-lg">
             <div class="square-image-wrapper">
-              <img src="<%= image.src %>" alt="Screenshot 1" class="square-image rounded-lg" onclick="openModal(this)" />
+              <img src="<%= image.src %>" alt="Screenshot 1" class="square-image rounded-lg" onclick="openModal(this)">
             </div>
           </div>
           
           <div id="previewModal" class="modal">
             <span class="close" onclick="closeModal()">&times;</span>
+            <span class="prev" onclick="prevImage()">&lt;</span>
+            <span class="next" onclick="nextImage()">&gt;</span>
             <img id="previewImage" src="" alt="Preview Image">
           </div>
           
@@ -182,18 +210,79 @@
             console.error(error);
           });
       });
+      const modal = document.querySelector(".modal");
+      const previewImage = document.getElementById("previewImage");
+      const images = document.querySelectorAll(".square-image");
+      const prev = document.querySelector(".prev");
+      const next = document.querySelector(".next");
+      let zoom = 1;
+      let currentImage = 0;
       function openModal(image) {
-        const modal = document.getElementById("previewModal");
-        const previewImage = document.getElementById("previewImage");
-      
-        previewImage.src = image.src;
+        zoom = 1;
         modal.classList.add("active");
+        previewImage.src = image.src;
+        currentImage = Array.from(images).indexOf(image);
       }
-      
       function closeModal() {
-        const modal = document.getElementById("previewModal");
         modal.classList.remove("active");
       }
+      function prevImage() {
+        currentImage--;
+        if (currentImage < 0) {
+          currentImage = images.length - 1;
+        }
+        previewImage.src = images[currentImage].src;
+      }
+      function nextImage() {
+        currentImage++;
+        if (currentImage > images.length - 1) {
+          currentImage = 0;
+        }
+        previewImage.src = images[currentImage].src;
+      }
+      
+      document.addEventListener("keydown", function (event) {
+        if(modal.classList.contains("active")) {
+          event.preventDefault();
+        }
+        if (event.key === "Escape") {
+          closeModal();
+        }
+        if (event.key === "ArrowLeft") {
+          prevImage();
+        }
+        if (event.key === "ArrowRight") {
+          nextImage();
+        }
+        if (event.key === "ArrowUp") {
+          zoom += 0.1;
+          previewImage.style.transform = `scale(${zoom})`;
+        }
+        if (event.key === "ArrowDown") {
+          zoom -= 0.1;
+          previewImage.style.transform = `scale(${zoom})`;
+        }
+      });
+
+      document.addEventListener("click", function (event) {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener("wheel", function (event) {
+        if(modal.classList.contains("active")) {
+          event.preventDefault();
+        }
+        if (event.deltaY < 0) {
+          zoom += 0.1;
+          previewImage.style.transform = `scale(${zoom})`;
+        } else {
+          zoom -= 0.1;
+          previewImage.style.transform = `scale(${zoom})`;
+        }
+      },{passive: false});
+
       
     </script>
   </body>

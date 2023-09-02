@@ -26,7 +26,7 @@ const projectSchema = new mongoose.Schema({
             },
             link_type: {
                 type: String,
-                enum: ['github', 'website', 'apk'],
+                enum: ['github', 'website', 'apk', 'docker'],
                 required: true
             }
         }
