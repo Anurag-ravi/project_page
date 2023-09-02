@@ -218,7 +218,6 @@
       let zoom = 1;
       let currentImage = 0;
       function openModal(image) {
-        zoom = 1;
         modal.classList.add("active");
         previewImage.src = image.src;
         currentImage = Array.from(images).indexOf(image);
@@ -244,23 +243,23 @@
       document.addEventListener("keydown", function (event) {
         if(modal.classList.contains("active")) {
           event.preventDefault();
-        }
-        if (event.key === "Escape") {
-          closeModal();
-        }
-        if (event.key === "ArrowLeft") {
-          prevImage();
-        }
-        if (event.key === "ArrowRight") {
-          nextImage();
-        }
-        if (event.key === "ArrowUp") {
-          zoom += 0.1;
-          previewImage.style.transform = `scale(${zoom})`;
-        }
-        if (event.key === "ArrowDown") {
-          zoom -= 0.1;
-          previewImage.style.transform = `scale(${zoom})`;
+          if (event.key === "Escape") {
+            closeModal();
+          }
+          if (event.key === "ArrowLeft") {
+            prevImage();
+          }
+          if (event.key === "ArrowRight") {
+            nextImage();
+          }
+          if (event.key === "ArrowUp") {
+            zoom += 0.1;
+            previewImage.style.transform = `scale(${zoom})`;
+          }
+          if (event.key === "ArrowDown") {
+            zoom -= 0.1;
+            previewImage.style.transform = `scale(${zoom})`;
+          }
         }
       });
 
@@ -273,13 +272,13 @@
       document.addEventListener("wheel", function (event) {
         if(modal.classList.contains("active")) {
           event.preventDefault();
-        }
-        if (event.deltaY < 0) {
-          zoom += 0.1;
-          previewImage.style.transform = `scale(${zoom})`;
-        } else {
-          zoom -= 0.1;
-          previewImage.style.transform = `scale(${zoom})`;
+          if (event.deltaY < 0) {
+            zoom += 0.1;
+            previewImage.style.transform = `scale(${zoom})`;
+          } else {
+            zoom -= 0.1;
+            previewImage.style.transform = `scale(${zoom})`;
+          }
         }
       },{passive: false});
 
